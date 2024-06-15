@@ -1,4 +1,8 @@
-import { createContext, PropsWithChildren, useContext as useContextBase } from 'react';
+import {
+  createContext,
+  PropsWithChildren,
+  useContext as useContextBase,
+} from 'react';
 
 export type UseMapPropsToContext<P, V> = (props: P) => V;
 
@@ -10,19 +14,18 @@ export interface CreateContextProviderOptions<V> {
 export type ContextProviderProps<P> = PropsWithChildren & P;
 
 export interface UseContextOpts {
-  allowUndefined?: boolean
+  allowUndefined?: boolean;
 }
 
-export function createContextProvider<P, V>(useMapPropsToContext: UseMapPropsToContext<P, V>, opts: CreateContextProviderOptions<V> = {}) {
-  const Context = createContext<V|undefined>(opts.defaultValue);
+export function createContextProvider<P, V>(
+  useMapPropsToContext: UseMapPropsToContext<P, V>,
+  opts: CreateContextProviderOptions<V> = {}
+) {
+  const Context = createContext<V | undefined>(opts.defaultValue);
 
   function ContextProvider(props: ContextProviderProps<P>) {
     const value = useMapPropsToContext(props);
-    return (
-      <Context.Provider value={value}>
-        {props.children}
-      </Context.Provider>
-    );
+    return <Context.Provider value={value}>{props.children}</Context.Provider>;
   }
 
   function useContextOrUndefined(): V | undefined {
@@ -44,5 +47,5 @@ export function createContextProvider<P, V>(useMapPropsToContext: UseMapPropsToC
     ContextProvider,
     useContext,
     useContextOrUndefined,
-  }
+  };
 }
